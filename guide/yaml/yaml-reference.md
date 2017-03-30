@@ -58,6 +58,11 @@ the entity being defined, with these being the most common:
     and optionally a `period`, to create a sensor feed which populates the sensor with
     the given name by running the given command (on an entity which as an ssh-able machine)
 
+  * `org.apache.brooklyn.core.sensor.windows.WinRmCommandSensor`: For a command supplied via WinRm. Takes a `name`, `command`,
+    and optionally a `period` and `executionDir`, to create a sensor feed which populates the sensor with
+    the given name by running the given command (on an entity which as an winrm-able machine).<br/>
+    _`"~"` will use the default execution directory for the WinRm session which is usually `%USERPROFILE%`_
+
 * `brooklyn.parameters`: documents a list of typed parameters the entity accepts. If none
   are specified the config keys declared in the entity's class are used (including the
   information from the `@CatalogConfig` annotation). The items have the following properties:
@@ -74,7 +79,7 @@ the entity being defined, with these being the most common:
   * `default`: a default value; this will be coerced to the declared `type`
   * `pinned`: mark the parameter as pinned (always displayed) for the UI. The default is `true`
   * `constraints`: a list of constraints the parameter should meet;
-    currently `required` is supported, with the default being not required
+    for details, see [Entity Configuration]({{ site.path.guide }}/yaml/entity-configuration.html#config-key-constraints). 
 
   A shorthand notation is also supported where just the name of the parameter is supplied
   as an item in the list, with the other values being unset or the default.
@@ -213,6 +218,10 @@ concise DSL defined here:
   `$brooklyn:root()`.
 * `$brooklyn:formatString("pattern e.g. %s %s", "field 1", "field 2")` returns a future which creates the formatted string
   with the given parameters, where parameters may be strings *or* other tasks such as `attributeWhenReady`
+* `$brooklyn:urlEncode("val")` returns a future which creates a string with the characters escaped
+  so it is a valid part of a URL. The parameter can be a string *or* another task. For example,
+  `$brooklyn:urlEncode($brooklyn:config(\"mykey\"))`. It uses "www-form-urlencoded" for the encoding,
+  which is appropriate for query parameters but not for some other parts of the URL (e.g. space is encoded as '+').
 * `$brooklyn:literal("string")` returns the given string as a literal (suppressing any `$brooklyn:` expansion)
 * `$brooklyn:object(Map)` creates an object, using keys `type` to define the java type,
   and either `object.fields` or `brooklyn.config` to supply bean/constructor/flags to create an instance
