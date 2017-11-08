@@ -50,6 +50,14 @@ This `TestEffector` example demonstrates the use of the `TestCase` and `TestSens
 {% readj example_yaml/testcases/effector-test-snippet.yaml %}
 {% endhighlight %}
 
+### HTTP Call Tests
+Demonstrates the following HTTP Call assertions against the specified `url`, which in these examples are being built from the `webappcluster` entities `host.address` and `proxy.http.port` sensors (the tester having flexibility in how the test URL is to be constructed):
+
+- asserts the response status code is 200 within 10 minutes of the blueprint being deployed.
+- asserts the response body matches the regex `(?s).*Br[o]{2}klyn Deployed.*` within 10 minutes of the blueprint being deployed. Note the presence of the `(?s)` dotall flag to test a multiline response.
+
+!CODEFILE "example_yaml/testcases/http-test-snippet.yaml"
+
 ### Full Example
 A sample blueprint containing all the tests described above is available [here](./example_yaml/testcases/getting-started-test-example.yaml).
 
