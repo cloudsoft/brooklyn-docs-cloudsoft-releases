@@ -16,7 +16,7 @@ and its `main.uri` sensor published at the root. If "Preferred Item" fails, "Fai
 will be become the primary. Any `demote` effector on "Preferred Item" and any `promote` effector
 on "Failover Item" will be invoked on failover.
 
-```yaml
+{% highlight yaml %}
 brooklyn.policies:
 - type: org.apache.brooklyn.policy.failover.ElectPrimaryPolicy
   brooklyn.config:
@@ -35,7 +35,7 @@ services:
     ha.primary.weight: 1
 - type: item
   name: Failover Item
-```
+{% endhighlight %}
 
 
 #### ElectPrimary Policy
