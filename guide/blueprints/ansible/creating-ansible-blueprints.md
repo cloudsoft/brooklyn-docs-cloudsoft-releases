@@ -128,7 +128,7 @@ There is no specific configuration in AnsibleEntity for Ansible [Roles](http://d
  AnsibleEntity might require.  The second child uses `attributeWhenReady` to block until the first is ready, before 
  starting the AnsibleEntity to apply the desired playbook.
  
-```yaml
+{% highlight yaml %}
 name: multi
 location:
   red1
@@ -166,7 +166,7 @@ services:
                 https_port: 8443
                 admin_username: admin
                 admin_password: secret
-```
+{% endhighlight %}
 
  
 An alternative to the above is to use Ansible itself to do the waiting, as in the variant below, which uses AnsibleEntity
@@ -174,7 +174,7 @@ itself in the first SameServerEntity child, to install the required material.  I
 AnsibleEntity rather than a BasicApplication, Ansible's `wait_for` operation is used as the first step in the playbook, 
 to block the remaining steps in its playbook until the first is complete.
 
-```yaml
+{% highlight yaml %}
 name: multi
 location:
   red1
@@ -212,4 +212,4 @@ services:
             https_port: 8443
             admin_username: admin
             admin_password: secret
- ```
+{% endhighlight %}
