@@ -56,7 +56,9 @@ Demonstrates the following HTTP Call assertions against the specified `url`, whi
 - asserts the response status code is 200 within 10 minutes of the blueprint being deployed.
 - asserts the response body matches the regex `(?s).*Br[o]{2}klyn Deployed.*` within 10 minutes of the blueprint being deployed. Note the presence of the `(?s)` dotall flag to test a multiline response.
 
-!CODEFILE "example_yaml/testcases/http-test-snippet.yaml"
+{% highlight yaml %}
+{% readj example_yaml/testcases/http-test-snippet.yaml %}
+{% endhighlight %}
 
 ### Full Example
 A sample blueprint containing all the tests described above is available [here](./example_yaml/testcases/getting-started-test-example.yaml).
