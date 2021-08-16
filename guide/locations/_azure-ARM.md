@@ -222,7 +222,7 @@ stored in protected .PFX file. It needs to be prepared upfront or created with t
 Placeholders surrounded with `<>` have to be replcaced with their respective values.
 
 {% highlight yaml %}
-{% read snippets/_location-azure-sample-windows.camp.md%}
+{% read snippets/_location-azure-sample-windows.camp.yaml%}
 {% endhighlight %}
 
 #### Known issues
