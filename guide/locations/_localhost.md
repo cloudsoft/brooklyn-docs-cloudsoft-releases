@@ -12,9 +12,9 @@ just by specifying `location: localhost` in YAML.
 
 For example:
 
-    location: localhost
-    services:
-    - type: org.apache.brooklyn.entity.database.mysql.MySqlNode
+{% highlight yaml %}
+{% read snippets/_location-localhost.camp.yaml%}
+{% endhighlight %}
 
 If you use a passphrase or prefer a different key, these can be configured as follows:
 

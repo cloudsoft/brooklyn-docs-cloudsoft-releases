@@ -17,18 +17,9 @@ It is easy to add additional rules to the initial security group using `org.apac
 
 YAML Example:
 
-```yaml
-name: ports @ AWS
-location: jclouds:aws-ec2:us-west-2
-services:
-- type: org.apache.brooklyn.entity.software.base.EmptySoftwareProcess
-  brooklyn.config:
-    provisioning.properties:
-      customizers:
-      - $brooklyn:object:
-          type: org.apache.brooklyn.location.jclouds.networking.SharedLocationSecurityGroupCustomizer
-          object.fields: {tcpPortRanges: ["900-910", "915", "22"], udpPortRanges: ["100","200-300"], cidr: "82.40.153.101/24"}
-```
+{% highlight yaml %}
+{% read snippets/_location-customizer-security-groups-initial.camp.yaml%}
+{% endhighlight %}
 
 Make sure that you have rule which makes port 22 accessible from Apache Brooklyn.
 
@@ -38,13 +29,9 @@ Apache Brooklyn exposes the SharedLocationSecurityGroupCustomizer functionality 
 just by supplying `effector.add.openInboundPorts: true` "brooklyn.config".
 Example configuration in effector
 
-```yaml
-location: jclouds:aws-ec2:us-west-2
-services:
-- type: org.apache.brooklyn.entity.software.base.EmptySoftwareProcess
-  brooklyn.config:
-    effector.add.openInboundPorts: true
-```
+{% highlight yaml %}
+{% read snippets/_location-customizer-security-groups-effector.camp.yaml%}
+{% endhighlight %}
 
 ### Known limitations
 

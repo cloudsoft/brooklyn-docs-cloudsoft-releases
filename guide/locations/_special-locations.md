@@ -15,9 +15,7 @@ provides a convenient syntax when specifying a single host.
 For example:
 
 {% highlight yaml %}
-location: host:(192.168.0.1)
-services:
-- type: org.apache.brooklyn.entity.webapp.jboss.JBoss7Server
+{% read snippets/_location-single-host.camp.yaml%}
 {% endhighlight %}
 
 Or, in `brooklyn.properties`, set `brooklyn.location.named.host1=host:(192.168.0.1)`.
@@ -38,18 +36,7 @@ In the example below, it provisions the first node to `192.168.0.1`, then it pro
 us-east-1 region (because the bring-your-own-nodes region will have run out of nodes).
 
 {% highlight yaml %}
-location:
-  multi:
-    targets:
-    - byon:(hosts=192.168.0.1)
-    - jclouds:aws-ec2:us-east-1
-services:
-- type: org.apache.brooklyn.entity.group.DynamicCluster
-  brooklyn.config:
-    cluster.initial.size: 3
-    dynamiccluster.memberspec:
-      $brooklyn:entitySpec:
-        type: org.apache.brooklyn.entity.machine.MachineEntity
+{% read snippets/_location-multi-location.camp.yaml%}
 {% endhighlight %}
 
 ##### Round-Robin Consumption and Availability Zones for Clustered Applications
@@ -68,20 +55,7 @@ locations (in this case, the locations were already added to the catalog, or def
 `brooklyn.properties`).
 
 {% highlight yaml %}
-location:
-  multi:
-    targets:
-    - my-location-1
-    - my-location-2
-    - my-location-3
-services:
-- type: org.apache.brooklyn.entity.group.DynamicCluster
-  brooklyn.config:
-    dynamiccluster.zone.enable: true
-    cluster.initial.size: 3
-    dynamiccluster.memberspec:
-      $brooklyn:entitySpec:
-        type: org.apache.brooklyn.entity.machine.MachineEntity
+{% read snippets/_location-round-robin.camp.yaml%}
 {% endhighlight %}
 
 Of course, clusters can also be deployed round-robin to real availability zones offered by
@@ -92,15 +66,7 @@ In the example below, the cluster will request VMs round-robin across the availa
 provided by AWS EC2 in the "us-east-1" region.
 
 {% highlight yaml %}
-location: jclouds:aws-ec2:us-east-1
-services:
-- type: org.apache.brooklyn.entity.group.DynamicCluster
-  brooklyn.config:
-    dynamiccluster.zone.enable: true
-    cluster.initial.size: 3
-    dynamiccluster.memberspec:
-      $brooklyn:entitySpec:
-        type: org.apache.brooklyn.entity.machine.MachineEntity
+{% read snippets/_location-round-robin-aws.camp.yaml%}
 {% endhighlight %}
 
 For more information about AWS EC2 availability zones, see
