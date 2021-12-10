@@ -8,7 +8,7 @@ title: Brooklyn Website and Docs (dev build)
 Consider looking at:
 
 * [the brooklyn website](/website/)
-* [the brooklyn user guide (version 1.1.0-SNAPSHOT)](guide/) <span> <!-- BROOKLYN_VERSION --> </span>
+* [the brooklyn user guide (version 1.1.0-20211210.1541)](guide/) <span> <!-- BROOKLYN_VERSION --> </span>
 
 Also see the file <code>README.md</code> in this directory.
 
