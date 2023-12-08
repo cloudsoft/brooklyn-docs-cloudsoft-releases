@@ -7,7 +7,7 @@
 #
 module BrooklynMetadata
 
-  BROOKLYN_VERSION = "1.1.0-SNAPSHOT" unless defined? BROOKLYN_VERSION
+  BROOKLYN_VERSION = "1.1.0-20231208.1248" unless defined? BROOKLYN_VERSION
 
   class Generator < Jekyll::Generator
     def generate(site)
