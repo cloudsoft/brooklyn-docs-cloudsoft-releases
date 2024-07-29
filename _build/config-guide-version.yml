@@ -1,6 +1,6 @@
 path:
   # BROOKLYN_VERSION_BELOW
-  guide: /v/1.2.0-SNAPSHOT
+  guide: /v/1.2.0-cloudsoft-amp-7.2.0-beta4re2
   # BROOKLYN_VERSION_BELOW
-  style: /v/1.2.0-SNAPSHOT/style
+  style: /v/1.2.0-cloudsoft-amp-7.2.0-beta4re2/style
   website: ""

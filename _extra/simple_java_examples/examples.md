@@ -22,7 +22,7 @@ If you have a Maven-based project, integrate this XML fragment with your pom.xml
 	<dependency>
 		<groupId>io.brooklyn</groupId>
 		<artifactId>brooklyn-all</artifactId>
-		<version>1.2.0-SNAPSHOT</version>  <!-- BROOKLYN_VERSION -->
+		<version>1.2.0-cloudsoft-amp-7.2.0-beta4re2</version>  <!-- BROOKLYN_VERSION -->
 	</dependency>
 </dependencies>
  
