@@ -237,9 +237,14 @@ concise DSL defined here:
 * `$brooklyn:attributeWhenReady("sensor")` will store a future which will be blocked when it is accessed,
   until the given `sensor` from this entity "truthy" (i.e. non-trivial, non-empty, non-zero) value
   (see below on `component` for looking up values on other sensors);
-  this can take a second argument being a map of options `timeout`, `timeout_if_down`, `abort_if_on_fire` (default `true`), 
-  and `wait_for_truthy` (default `true`);
-  the default is `{ $brooklyn:attributeWhenReady: [ "sensor", { timeout: "forever", timeouf_if_down: "1m" } ] }`
+  this can take a second argument being a map defining options:
+  * `wait_for_truthy` (default `true`): whether to wait for truthy values; if unset, it will only wait if the value or entity is not resolvable
+  * `timeout` (default `forever`): how long to wait for the value, subject to any additional conditional timeout or abort settings
+  * `abort_if_on_fire` (default `true`): stop waiting if the target entity is on fire or goes on fire; equivalent to `timeout_if_on_fire=0` and `timeout_if_on_fire_initial=15s` (unless either of those is explicitly set to a non-null value, in which case this has no effect)  
+  * `timeout_if_on_fire` (default unset): stop waiting if the target entity goes on fire and stays on fire for this duration (where the value may be `0` to abort immediately) 
+  * `timeout_if_on_fire_initial` (default unset): as `timeout_if_on_fire`, but always granting at minimum this duration from the start of the resolution for the target entity to recover, for use when the target might be on fire but might be recovering concurrently
+  * `timeout_if_down` (default `1m`): as `timeout_if_on_fire` but also checking if the target entity is stopped or stopping in addition to on-fire 
+  * `timeout_if_down_initial` (default unset): as `timeout_if_on_fire_initial` but also checking if the target entity is stopped or stopping in addition to on-fire 
 * `$brooklyn:config("key")` will insert the value set against the given key at this entity (or nearest ancestor);
   can be used to supply config at the root which is used in multiple places in the plan
 * `$brooklyn:sensor("sensor.name")` returns the given sensor on the current entity if found, or an untyped (Object) sensor;
