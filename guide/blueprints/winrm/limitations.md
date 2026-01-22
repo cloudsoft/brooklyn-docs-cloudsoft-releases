@@ -98,6 +98,10 @@ The workaround is to write a file with the batch commands, have that file upload
 Note this is not done automatically because that could affect the capture and returning
 of the exit code for the commands executed.
 
+### Usage of '%' in Environment Variables
+
+WinRM does not support the `%` character in the value of any environment variable passed to it.  It attempts to treat it as a reference to a system variable, and will refuse the command if that character is used in a way inconsistent with such a reference.  All other characters are supported and there is no way to escape a single `%`, so it is recommended to ensure that character is not used in values passed as WinRM environment variables.
+
 ### Install location
 
 Work is required to better configure a default install location on the VM (e.g. so that 
