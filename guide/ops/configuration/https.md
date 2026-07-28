@@ -14,10 +14,15 @@ The following command creates a self-signed certificate and adds it to a keystor
 {% highlight bash %}
 % keytool -genkey -keyalg RSA -alias brooklyn \
           -keystore <path-to-keystore-directory>/keystore.jks -storepass "mypassword" \
-          -validity 365 -keysize 2048 -keypass "password"
+          -validity 365 -keysize 2048 -keypass "password" \
+          -ext "SAN=dns:<your-server-hostname>"
 {% endhighlight %}
 
 The passwords above should be changed to your own values.  Omit those arguments above for the tool to prompt you for the values.
+Replace `<your-server-hostname>` with the hostname clients use to reach the server (and set the same value when
+prompted for the certificate's first and last name / CN). This matters because the certificate served is chosen by
+matching the client's requested hostname against each certificate's CN and Subject Alternative Names — see
+[Which certificate gets served (SNI)](#which-certificate-gets-served-sni) below.
 
 You will then be prompted to enter your name and organization details. This will use (or create, if it does not exist)
 a keystore with the password `mypassword` - you should use your own secure password, which will be the same password
@@ -54,6 +59,7 @@ org.osgi.service.http.secure.enabled=true
 org.ops4j.pax.web.ssl.keystore=${karaf.home}/etc/keystores/keystore.jks
 org.ops4j.pax.web.ssl.password=password
 org.ops4j.pax.web.ssl.keypassword=password
+org.ops4j.pax.web.ssl.key.alias=brooklyn
 org.ops4j.pax.web.ssl.clientauthwanted=false
 org.ops4j.pax.web.ssl.clientauthneeded=false
 {% endhighlight %}
@@ -61,6 +67,36 @@ org.ops4j.pax.web.ssl.clientauthneeded=false
 replacing the passwords with appropriate values, and restart the server. Note the keystore location is relative to 
 the installation root, but a fully qualified path can also be given, if it is desired to use some separate pre-existing
 store.
+
+### Which certificate gets served (SNI)
+
+When a client opens an HTTPS connection it normally sends the hostname it is trying to reach as a TLS
+*Server Name Indication* (SNI) extension. The server matches that hostname against the CN and Subject
+Alternative Names of every certificate in the keystore and presents the one that matches. **This hostname
+matching takes precedence over `org.ops4j.pax.web.ssl.key.alias`.** The alias property only chooses the
+certificate for clients that send no SNI, or whose hostname matches no certificate in the keystore.
+
+In practice this means:
+
+* Make sure your certificate's CN — and ideally a Subject Alternative Name — matches the hostname your
+  users actually use, for example by creating it with `-ext SAN=dns:brooklyn.example.com`. Browsers always
+  send SNI, so they are then served your certificate automatically, regardless of the alias setting.
+* A keystore may contain a default self-signed certificate, either shipped with a distribution or created
+  when the server first started. As long as that default does not claim the same hostname as yours it never
+  shadows your certificate — it is only used as the SNI fallback. A well-chosen default uses a name that
+  cannot match a real host, such as `CN=default`. If a default certificate *does* claim your hostname — for
+  example one with `CN=localhost` when your users reach the server as `localhost` — remove or replace it.
+* `org.ops4j.pax.web.ssl.key.alias` is still worth setting — it selects which certificate is served as the
+  fallback to clients that send no SNI — but on its own it does **not** override SNI hostname matching.
+
+After restarting, you can verify which certificate is actually being served. Pass the real hostname as the SNI
+name with `-servername`, because that is what browsers send; testing with a hostname that happens to match a
+different certificate (such as `localhost` against a default `CN=localhost` certificate) is misleading:
+
+{% highlight bash %}
+% openssl s_client -connect <host>:8443 -servername <host> </dev/null 2>/dev/null \
+        | openssl x509 -noout -subject -issuer -serial -dates
+{% endhighlight %}
 
 To enable HTTPS _only_, i.e. to disable HTTP, add the following line to this file:
 
